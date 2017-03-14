@@ -9,7 +9,7 @@ import org.jetbrains.spek.api.dsl.xgiven
 import java.nio.file.Files
 import java.nio.file.Path
 
-object GitDDAGInitialisationTest : Spek({
+object GitDDAGInitialisationTests : Spek({
     var workingDirectory : Path
 
     given("The working directory does not exist") {
