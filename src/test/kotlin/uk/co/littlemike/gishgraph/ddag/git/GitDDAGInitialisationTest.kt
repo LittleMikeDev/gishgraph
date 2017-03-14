@@ -1,4 +1,4 @@
-package uk.co.littlemike.gishgraph.serialization
+package uk.co.littlemike.gishgraph.ddag.git
 
 import com.winterbe.expekt.should
 import org.jetbrains.spek.api.Spek

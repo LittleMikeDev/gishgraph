@@ -1,4 +1,4 @@
-package uk.co.littlemike.gishgraph.serialization
+package uk.co.littlemike.gishgraph.ddag.git
 
 import java.nio.file.Files
 import java.nio.file.Path
