@@ -1,11 +1,14 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.internal.storage.file.FileRepository
-import java.io.File
+import java.nio.file.Files
 import java.nio.file.Path
 
 
-class GitDDAG(workingDirectory: Path) {
+class GitDDAG(workingDirectory: Path, myRemote: Remote) {
     val git = Git.init().setDirectory(workingDirectory.toFile()).call()
+
+    init {
+        Files.createDirectories(workingDirectory.resolve(myRemote.id))
+    }
 }

@@ -5,7 +5,6 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.jetbrains.spek.api.dsl.xgiven
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -16,7 +15,7 @@ object GitDDAGInitialisationTests : Spek({
         workingDirectory = Files.createTempDirectory("GitDGraphTest-").resolve("repo")
 
         on("Initialisation of the repo") {
-            GitDDAG(workingDirectory)
+            GitDDAG(workingDirectory, Remote("", ""))
         }
 
         it("Initializes in the new working directory $workingDirectory") {
@@ -30,7 +29,7 @@ object GitDDAGInitialisationTests : Spek({
         GitRepository(workingDirectory).init()
 
         on("Initialisation of the repo") {
-            GitDDAG(workingDirectory)
+            GitDDAG(workingDirectory, Remote("", ""))
         }
 
         it("Initializes in the existing working directory") {
