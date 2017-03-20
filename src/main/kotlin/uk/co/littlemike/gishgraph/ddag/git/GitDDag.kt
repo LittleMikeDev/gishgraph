@@ -5,7 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 
-class GitDDAG(workingDirectory: Path, myRemote: Remote) {
+class GitDDag(workingDirectory: Path, myRemote: Remote) {
     val git = Git.init().setDirectory(workingDirectory.toFile()).call()
 
     init {

@@ -8,14 +8,14 @@ import org.jetbrains.spek.api.dsl.on
 import java.nio.file.Files
 import java.nio.file.Path
 
-object GitDDAGInitialisationTests : Spek({
+object GitDDagInitialisationTests : Spek({
     var workingDirectory : Path
 
     given("The working directory does not exist") {
         workingDirectory = Files.createTempDirectory("GitDGraphTest-").resolve("repo")
 
         on("Initialisation of the repo") {
-            GitDDAG(workingDirectory, Remote("", ""))
+            GitDDag(workingDirectory, Remote("", ""))
         }
 
         it("Initializes in the new working directory $workingDirectory") {
@@ -29,7 +29,7 @@ object GitDDAGInitialisationTests : Spek({
         GitRepository(workingDirectory).init()
 
         on("Initialisation of the repo") {
-            GitDDAG(workingDirectory, Remote("", ""))
+            GitDDag(workingDirectory, Remote("", ""))
         }
 
         it("Initializes in the existing working directory") {

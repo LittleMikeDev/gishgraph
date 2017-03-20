@@ -11,7 +11,7 @@ object GitDDagCommitTests : Spek({
     val localDirectory = root.resolve("local")
     val remoteDirectory = root.resolve("remote")
     val myRemote = Remote("my-id", remoteDirectory.toAbsolutePath().toUri().path)
-    val ddag = GitDDAG(localDirectory, myRemote)
+    val ddag = GitDDag(localDirectory, myRemote)
     val remoteRepository = GitRepository(root.resolve("remote"))
 
     on ("Initialisation of repo") {
