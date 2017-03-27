@@ -15,7 +15,7 @@ object GitDDagInitialisationTests : Spek({
         workingDirectory = Files.createTempDirectory("GitDGraphTest-").resolve("repo")
 
         on("Initialisation of the repo") {
-            GitDDag(workingDirectory, Remote("", ""))
+            GitDDag(workingDirectory, workingDirectory.asRemote(""))
         }
 
         it("Initializes in the new working directory $workingDirectory") {
@@ -29,7 +29,7 @@ object GitDDagInitialisationTests : Spek({
         GitRepository(workingDirectory).init()
 
         on("Initialisation of the repo") {
-            GitDDag(workingDirectory, Remote("", ""))
+            GitDDag(workingDirectory, workingDirectory.asRemote(""))
         }
 
         it("Initializes in the existing working directory") {
