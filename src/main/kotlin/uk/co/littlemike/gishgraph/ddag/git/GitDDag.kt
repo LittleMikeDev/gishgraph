@@ -4,11 +4,15 @@ import org.eclipse.jgit.api.Git
 import java.nio.file.Files
 import java.nio.file.Path
 
-
 class GitDDag(workingDirectory: Path, myRemote: Remote) {
-    val git = Git.init().setDirectory(workingDirectory.toFile()).call()
+    private val git = Git.init().setDirectory(workingDirectory.toFile()).call()
+    private val myCommits = workingDirectory.resolve(myRemote.id)
 
     init {
-        Files.createDirectories(workingDirectory.resolve(myRemote.id))
+        Files.createDirectories(myCommits)
+    }
+
+    fun createInitialCommit(commitId: String, data: ByteArray) {
+        myCommits.resolve(commitId).toFile().writeBytes(data)
     }
 }
