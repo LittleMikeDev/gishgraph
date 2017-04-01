@@ -3,7 +3,7 @@ package uk.co.littlemike.gishgraph.ddag.git
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevWalk
-import uk.co.littlemike.gishgraph.use
+import uk.co.littlemike.gishgraph.extensions.use
 import java.nio.file.Path
 
 class GitRepository(val workingDirectory: Path) {
@@ -11,7 +11,7 @@ class GitRepository(val workingDirectory: Path) {
 
     fun isClean() = git.status().call().isClean
 
-    fun asRemote(id: String) = workingDirectory.asRemote(id)
+    fun asRemote(id: String) = workingDirectory.remote(id)
 
     fun refExists(refName: String) = git.repository.findRef(refName) != null
 

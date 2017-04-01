@@ -8,5 +8,5 @@ class TestGitDDag(rootDirectory: Path, val id: String) {
     val localRepo = GitRepository(workingDirectory)
     val ddag = GitDDag(localRepo.workingDirectory, remoteRepo.asRemote(id))
 
-    fun asRemote() = remoteRepo.asRemote(id)
+    fun remote() = remoteRepo.asRemote(id)
 }

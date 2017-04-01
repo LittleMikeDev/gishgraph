@@ -1,4 +1,4 @@
-package uk.co.littlemike.gishgraph
+package uk.co.littlemike.gishgraph.extensions
 
 inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
     @Suppress("ConvertTryFinallyToUseCall")

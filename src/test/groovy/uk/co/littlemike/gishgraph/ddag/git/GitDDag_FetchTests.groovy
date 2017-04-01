@@ -11,7 +11,7 @@ class GitDDag_FetchTests extends GitDDag_TestBase {
         theirDag.ddag.createInitialCommit(theirCommitId, theirCommitData)
 
         when:
-        myDag.ddag.fetch(theirDag.asRemote())
+        myDag.ddag.fetch(theirDag.remote())
 
         then:
         def theirCommit = theirDag.localRepo.findCommit(theirId)
@@ -22,10 +22,10 @@ class GitDDag_FetchTests extends GitDDag_TestBase {
     def "Can fetch twice from the same repository without error"() {
         given:
         theirDag.ddag.createInitialCommit(theirCommitId, theirCommitData)
-        myDag.ddag.fetch(theirDag.asRemote())
+        myDag.ddag.fetch(theirDag.remote())
 
         when:
-        myDag.ddag.fetch(theirDag.asRemote())
+        myDag.ddag.fetch(theirDag.remote())
 
         then:
         def theirCommit = theirDag.localRepo.findCommit(theirId)
