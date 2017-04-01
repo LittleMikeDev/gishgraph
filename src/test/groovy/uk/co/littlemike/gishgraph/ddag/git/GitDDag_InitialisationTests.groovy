@@ -1,6 +1,5 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
-import org.eclipse.jgit.revwalk.RevCommit
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -29,6 +28,12 @@ class GitDDag_InitialisationTests extends Specification {
         myDag.workingDirectory.resolve("myDag").toFile().isDirectory()
     }
 
+    def "has a branch named after own id instead of master"() {
+        expect:
+        !myDag.localRepo.refExists("master")
+        myDag.localRepo.refExists(myId)
+    }
+
     def "creates file with contents of initial commit"() {
         when:
         myDag.ddag.createInitialCommit(commitId, commitData)
@@ -45,9 +50,18 @@ class GitDDag_InitialisationTests extends Specification {
 
         then:
         myDag.localRepo.isClean()
-        RevCommit headCommit = myDag.localRepo.findCommit("HEAD")
+        def headCommit = myDag.localRepo.findCommit("HEAD")
         headCommit != null
         headCommit.fullMessage == commitId
+    }
 
+    def "commits to own branch"() {
+        when:
+        myDag.ddag.createInitialCommit(commitId, commitData)
+
+        then:
+        def headCommit = myDag.localRepo.findCommit("HEAD")
+        def branchCommit = myDag.localRepo.findCommit(myId)
+        headCommit.id == branchCommit?.id
     }
 }

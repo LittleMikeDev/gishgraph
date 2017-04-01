@@ -13,8 +13,10 @@ class GitRepository(val workingDirectory: Path) {
 
     fun asRemote(id: String) = workingDirectory.asRemote(id)
 
+    fun refExists(refName: String) = git.repository.findRef(refName) != null
+
     fun findCommit(refName: String): RevCommit? {
-        val commitId = git.repository.findRef(refName)?.leaf?.objectId
+        val commitId = git.repository.findRef(refName)?.leaf?.objectId ?: return null
         RevWalk(git.repository).use {
             return it.parseCommit(commitId)
         }

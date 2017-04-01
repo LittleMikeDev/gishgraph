@@ -10,6 +10,12 @@ class GitDDag(workingDirectory: Path, myRemote: Remote) {
 
     init {
         Files.createDirectories(myCommits)
+        git.commit().setMessage("Created repo for ${myRemote.id}").call()
+        git.checkout()
+                .setCreateBranch(true)
+                .setName(myRemote.id)
+                .call()
+        git.branchDelete().setBranchNames("master").call()
     }
 
     fun createInitialCommit(commitId: String, data: ByteArray) {
