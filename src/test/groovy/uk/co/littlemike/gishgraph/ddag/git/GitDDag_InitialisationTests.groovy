@@ -1,8 +1,10 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
+import groovy.json.internal.Charsets
+
 class GitDDag_InitialisationTests extends GitDDag_TestBase {
     static String commitId = "a-commit"
-    static byte[] commitData = "Hello world!".getBytes("UTF-8")
+    static byte[] commitData = "Hello world!".getBytes(Charsets.UTF_8)
 
     def "initialises git in working directory"() {
         expect:
