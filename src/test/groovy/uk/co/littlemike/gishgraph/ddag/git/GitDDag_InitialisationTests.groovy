@@ -1,21 +1,8 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-import spock.lang.Specification
-
-class GitDDag_InitialisationTests extends Specification {
+class GitDDag_InitialisationTests extends GitDDag_TestBase {
     static String commitId = "a-commit"
     static byte[] commitData = "Hello world!".getBytes("UTF-8")
-    static String myId = "myDag"
-
-    @Rule
-    TemporaryFolder folder
-    TestGitDDag myDag
-
-    def setup() {
-        myDag = new TestGitDDag(folder.root.toPath(), myId)
-    }
 
     def "initialises git in working directory"() {
         expect:
@@ -25,7 +12,7 @@ class GitDDag_InitialisationTests extends Specification {
 
     def "creates folder for own commits"() {
         expect:
-        myDag.workingDirectory.resolve("myDag").toFile().isDirectory()
+        myDag.workingDirectory.resolve(myId).toFile().isDirectory()
     }
 
     def "has a branch named after own id instead of master"() {

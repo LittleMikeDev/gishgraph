@@ -35,4 +35,9 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
             it
         }.call()
     }
+
+    fun fetch(remote: Remote) {
+        addRemote(remote)
+        git.fetch().setRemote(remote.id).call()
+    }
 }
