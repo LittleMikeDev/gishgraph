@@ -14,5 +14,9 @@ class GitDDag(workingDirectory: Path, myRemote: Remote) {
 
     fun createInitialCommit(commitId: String, data: ByteArray) {
         myCommits.resolve(commitId).toFile().writeBytes(data)
+        git.add().addFilepattern(".").call()
+        git.commit()
+                .setMessage(commitId)
+                .call()
     }
 }

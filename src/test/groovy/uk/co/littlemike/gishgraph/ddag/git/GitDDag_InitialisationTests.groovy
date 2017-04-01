@@ -1,19 +1,18 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
+import org.eclipse.jgit.revwalk.RevCommit
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
-import spock.lang.Unroll
-
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
 
 class GitDDag_InitialisationTests extends Specification {
+    static String commitId = "a-commit"
+    static byte[] commitData = "Hello world!".getBytes("UTF-8")
+    static String myId = "myDag"
 
     @Rule
     TemporaryFolder folder
     TestGitDDag myDag
-    String myId = "myDag"
 
     def setup() {
         myDag = new TestGitDDag(folder.root.toPath(), myId)
@@ -22,7 +21,7 @@ class GitDDag_InitialisationTests extends Specification {
     def "initialises git in working directory"() {
         expect:
         myDag.workingDirectory.resolve(".git").toFile().isDirectory()
-        myDag.localRepo.isInitialized()
+        myDag.localRepo.isClean()
     }
 
     def "creates folder for own commits"() {
@@ -31,17 +30,24 @@ class GitDDag_InitialisationTests extends Specification {
     }
 
     def "creates file with contents of initial commit"() {
-        given:
-        def id = "a-commit"
-        def data = "Hello world!".getBytes(StandardCharsets.UTF_8)
-
         when:
-        myDag.ddag.createInitialCommit(id, data)
+        myDag.ddag.createInitialCommit(commitId, commitData)
 
         then:
-        def commitFile = myDag.workingDirectory.resolve(myId).resolve(id).toFile()
+        def commitFile = myDag.workingDirectory.resolve(myId).resolve(commitId).toFile()
         commitFile.isFile()
-        new String(commitFile.bytes, StandardCharsets.UTF_8) == "Hello world!"
+        commitFile.bytes == commitData
     }
 
+    def "commits initial commit"() {
+        when:
+        myDag.ddag.createInitialCommit(commitId, commitData)
+
+        then:
+        myDag.localRepo.isClean()
+        RevCommit headCommit = myDag.localRepo.findCommit("HEAD")
+        headCommit != null
+        headCommit.fullMessage == commitId
+
+    }
 }
