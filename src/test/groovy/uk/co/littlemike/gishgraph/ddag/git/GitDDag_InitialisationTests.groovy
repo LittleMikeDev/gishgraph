@@ -64,4 +64,14 @@ class GitDDag_InitialisationTests extends Specification {
         def branchCommit = myDag.localRepo.findCommit(myId)
         headCommit.id == branchCommit?.id
     }
+
+    def "pushes commit to own remote"() {
+        when:
+        myDag.ddag.createInitialCommit(commitId, commitData)
+
+        then:
+        def localMaster = myDag.localRepo.findCommit(myId)
+        def remoteMaster = myDag.remoteRepo.findCommit(myId)
+        localMaster.id == remoteMaster?.id
+    }
 }
