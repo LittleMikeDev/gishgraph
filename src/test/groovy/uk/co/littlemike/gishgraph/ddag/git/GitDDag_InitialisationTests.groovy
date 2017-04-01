@@ -39,9 +39,9 @@ class GitDDag_InitialisationTests extends GitDDag_TestBase {
 
         then:
         myDag.localRepo.isClean()
-        def headCommit = myDag.localRepo.findCommit("HEAD")
-        headCommit != null
-        headCommit.fullMessage == commitId
+        def commit = myHead()
+        commit != null
+        commit.fullMessage == commitId
     }
 
     def "commits to own branch"() {
@@ -49,9 +49,9 @@ class GitDDag_InitialisationTests extends GitDDag_TestBase {
         myDag.ddag.createInitialCommit(commitId, commitData)
 
         then:
-        def headCommit = myDag.localRepo.findCommit("HEAD")
+        def commit = myHead()
         def branchCommit = myDag.localRepo.findCommit(myId)
-        headCommit.id == branchCommit?.id
+        commit.id == branchCommit?.id
     }
 
     def "pushes commit to own remote"() {
