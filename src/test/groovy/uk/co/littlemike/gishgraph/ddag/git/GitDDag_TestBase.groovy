@@ -27,13 +27,13 @@ class GitDDag_TestBase extends Specification {
         theirDag.ddag.fetch(myDag.remote())
     }
 
-    def iCommit(String id) {
-        myDag.ddag.commit(id, utf8(id), theirDag.remote())
+    def iCommit(String eventId) {
+        myDag.ddag.createEvent(eventId, utf8(eventId), theirDag.remote())
         return myHead()
     }
 
-    def theyCommit(String id) {
-        theirDag.ddag.commit(id, utf8(id), myDag.remote())
+    def theyCommit(String eventId) {
+        theirDag.ddag.createEvent(eventId, utf8(eventId), myDag.remote())
         return theirHead()
     }
 

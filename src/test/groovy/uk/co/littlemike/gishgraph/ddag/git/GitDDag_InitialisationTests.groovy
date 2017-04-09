@@ -3,8 +3,8 @@ package uk.co.littlemike.gishgraph.ddag.git
 import groovy.json.internal.Charsets
 
 class GitDDag_InitialisationTests extends GitDDag_TestBase {
-    static String commitId = "a-commit"
-    static byte[] commitData = "Hello world!".getBytes(Charsets.UTF_8)
+    static String eventId = "an-event"
+    static byte[] eventData = "Hello world!".getBytes(Charsets.UTF_8)
 
     def "initialises git in working directory"() {
         expect:
@@ -23,30 +23,30 @@ class GitDDag_InitialisationTests extends GitDDag_TestBase {
         myDag.localRepo.refExists(myId)
     }
 
-    def "creates file with contents of initial commit"() {
+    def "creates file with contents of initial event"() {
         when:
-        myDag.ddag.createInitialCommit(commitId, commitData)
+        myDag.ddag.createInitialEvent(eventId, eventData)
 
         then:
-        def commitFile = myDag.workingDirectory.resolve(myId).resolve(commitId).toFile()
+        def commitFile = myDag.workingDirectory.resolve(myId).resolve(eventId).toFile()
         commitFile.isFile()
-        commitFile.bytes == commitData
+        commitFile.bytes == eventData
     }
 
-    def "commits initial commit"() {
+    def "commits initial event"() {
         when:
-        myDag.ddag.createInitialCommit(commitId, commitData)
+        myDag.ddag.createInitialEvent(eventId, eventData)
 
         then:
         myDag.localRepo.isClean()
         def commit = myHead()
         commit != null
-        commit.fullMessage == commitId
+        commit.fullMessage == eventId
     }
 
     def "commits to own branch"() {
         when:
-        myDag.ddag.createInitialCommit(commitId, commitData)
+        myDag.ddag.createInitialEvent(eventId, eventData)
 
         then:
         def commit = myHead()
@@ -56,7 +56,7 @@ class GitDDag_InitialisationTests extends GitDDag_TestBase {
 
     def "pushes commit to own remote"() {
         when:
-        myDag.ddag.createInitialCommit(commitId, commitData)
+        myDag.ddag.createInitialEvent(eventId, eventData)
 
         then:
         def localMaster = myDag.localRepo.findCommit(myId)

@@ -3,15 +3,15 @@ package uk.co.littlemike.gishgraph.ddag.git
 import org.eclipse.jgit.revwalk.RevCommit
 
 class GitDDag_CommitTests extends GitDDag_TestBase {
-    static commitId = "me-2"
-    static commitData = utf8(commitId)
+    static eventId = "me-2"
+    static eventData = utf8(eventId)
 
     RevCommit myInitialCommit
     RevCommit theirInitialCommit
 
     def setup() {
-        myDag.ddag.createInitialCommit("me-1", utf8("me-1"))
-        theirDag.ddag.createInitialCommit("them-1", utf8("them-1"))
+        myDag.ddag.createInitialEvent("me-1", utf8("me-1"))
+        theirDag.ddag.createInitialEvent("them-1", utf8("them-1"))
         iFetch()
         theyFetch()
 
@@ -19,29 +19,29 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
         theirInitialCommit = theirHead()
     }
 
-    def "Creates file with contents of commit"() {
+    def "Creates file with contents of event"() {
         when:
-        iCommit(commitId)
+        iCommit(eventId)
 
         then:
-        def commitFile = myDag.workingDirectory.resolve(myId).resolve(commitId).toFile()
+        def commitFile = myDag.workingDirectory.resolve(myId).resolve(eventId).toFile()
         commitFile.isFile()
-        commitFile.bytes == commitData
+        commitFile.bytes == eventData
     }
 
-    def "Commits commit"() {
+    def "Commits event"() {
         when:
-        def myCommit = iCommit(commitId)
+        def myCommit = iCommit(eventId)
 
         then:
         myDag.localRepo.isClean()
         myCommit != null
-        myCommit.fullMessage == commitId
+        myCommit.fullMessage == eventId
     }
 
-    def "Commit is a merge commit from my and their initial commits"() {
+    def "Commit is a merge commit from my and their initial events"() {
         when:
-        def myCommit = iCommit(commitId)
+        def myCommit = iCommit(eventId)
 
         then:
         myCommit.parentCount == 2
@@ -51,7 +51,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Commits to my branch"() {
         when:
-        def myCommit = iCommit(commitId)
+        def myCommit = iCommit(eventId)
 
         then:
         def branchCommit = myDag.localRepo.findCommit(myId)
@@ -60,14 +60,14 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Pushes merge commit to remote"() {
         when:
-        def myCommit = iCommit(commitId)
+        def myCommit = iCommit(eventId)
 
         then:
         def remoteCommit = myDag.remoteRepo.findCommit(myId)
         myCommit.id == remoteCommit?.id
     }
 
-    def "Can commit on top of their commit"() {
+    def "Can commit on top of their event"() {
         given:
         def them2 = theyCommit("them-2")
         iFetch()
@@ -81,7 +81,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
         me2.parents[1].id == them2.id
     }
 
-    def "Can fetch and build commits off each other asynchronously"() {
+    def "Can fetch and build events off each other asynchronously"() {
         given:
         // Simultaneous crossover commits
         def me2 = iCommit("me-2")

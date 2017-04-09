@@ -22,13 +22,13 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
         addRemote(myRemote)
     }
 
-    fun createInitialCommit(commitId: String, data: ByteArray) {
+    fun createInitialEvent(commitId: String, data: ByteArray) {
         writeCommit(commitId, data)
         git.commit().setMessage(commitId).call()
         push()
     }
 
-    fun commit(commitId: String, data: ByteArray, remote: Remote) {
+    fun createEvent(commitId: String, data: ByteArray, remote: Remote) {
         git.merge()
                 .setCommit(false)
                 .setFastForward(MergeCommand.FastForwardMode.NO_FF)

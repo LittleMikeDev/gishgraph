@@ -1,12 +1,12 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
 class GitDDag_FetchTests extends GitDDag_TestBase {
-    static String theirCommitId = "their-commit"
-    static byte[] theirCommitData = utf8("Foo & Bar")
+    static String theirEventId = "their-event"
+    static byte[] theirEventData = utf8("Foo & Bar")
 
     def "Fetches commits from other repository"() {
         given:
-        theirDag.ddag.createInitialCommit(theirCommitId, theirCommitData)
+        theirDag.ddag.createInitialEvent(theirEventId, theirEventData)
 
         when:
         iFetch()
@@ -19,7 +19,7 @@ class GitDDag_FetchTests extends GitDDag_TestBase {
 
     def "Can fetch twice from the same repository without error"() {
         given:
-        theirDag.ddag.createInitialCommit(theirCommitId, theirCommitData)
+        theirDag.ddag.createInitialEvent(theirEventId, theirEventData)
         iFetch()
 
         when:
