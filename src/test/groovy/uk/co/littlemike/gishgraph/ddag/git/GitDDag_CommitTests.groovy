@@ -12,8 +12,6 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
     def setup() {
         myDag.ddag.createInitialEvent("me-1", utf8("me-1"))
         theirDag.ddag.createInitialEvent("them-1", utf8("them-1"))
-        iFetch()
-        theyFetch()
 
         myInitialCommit = myHead()
         theirInitialCommit = theirHead()
@@ -21,7 +19,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Creates file with contents of event"() {
         when:
-        iCommit(eventId)
+        iSync(eventId)
 
         then:
         def commitFile = myDag.workingDirectory.resolve(myId).resolve(eventId).toFile()
@@ -31,7 +29,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Commits event"() {
         when:
-        def myCommit = iCommit(eventId)
+        def myCommit = iSync(eventId)
 
         then:
         myDag.localRepo.isClean()
@@ -41,7 +39,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Commit is a merge commit from my and their initial events"() {
         when:
-        def myCommit = iCommit(eventId)
+        def myCommit = iSync(eventId)
 
         then:
         myCommit.parentCount == 2
@@ -51,7 +49,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Commits to my branch"() {
         when:
-        def myCommit = iCommit(eventId)
+        def myCommit = iSync(eventId)
 
         then:
         def branchCommit = myDag.localRepo.findCommit(myId)
@@ -60,7 +58,7 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Pushes merge commit to remote"() {
         when:
-        def myCommit = iCommit(eventId)
+        def myCommit = iSync(eventId)
 
         then:
         def remoteCommit = myDag.remoteRepo.findCommit(myId)
@@ -69,11 +67,10 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
 
     def "Can commit on top of their event"() {
         given:
-        def them2 = theyCommit("them-2")
-        iFetch()
+        def them2 = theySync("them-2")
 
         when:
-        def me2 = iCommit("me-2")
+        def me2 = iSync("me-2")
 
         then:
         me2.parentCount == 2
@@ -84,14 +81,12 @@ class GitDDag_CommitTests extends GitDDag_TestBase {
     def "Can fetch and build events off each other asynchronously"() {
         given:
         // Simultaneous crossover commits
-        def me2 = iCommit("me-2")
-        theyCommit("them-2")
+        def me2 = iSync("me-2")
+        theySync("them-2")
         //They catch up
-        theyFetch()
-        def them3 = theyCommit("them-3")
+        def them3 = theySync("them-3")
         // I catch up
-        iFetch()
-        def me3 = iCommit("me-3")
+        def me3 = iSync("me-3")
 
         expect:
         me3.parents[0].id == me2.id

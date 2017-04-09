@@ -9,7 +9,7 @@ class GitDDag_FetchTests extends GitDDag_TestBase {
         theirDag.ddag.createInitialEvent(theirEventId, theirEventData)
 
         when:
-        iFetch()
+        iSync("me-1")
 
         then:
         def theirCommit = theirHead()
@@ -20,10 +20,10 @@ class GitDDag_FetchTests extends GitDDag_TestBase {
     def "Can fetch twice from the same repository without error"() {
         given:
         theirDag.ddag.createInitialEvent(theirEventId, theirEventData)
-        iFetch()
+        iSync("me-1")
 
         when:
-        iFetch()
+        iSync("me-2")
 
         then:
         def theirCommit = theirHead()

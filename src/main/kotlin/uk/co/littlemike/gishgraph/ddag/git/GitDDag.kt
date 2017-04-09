@@ -28,7 +28,9 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
         push()
     }
 
-    fun createEvent(commitId: String, data: ByteArray, remote: Remote) {
+    fun sync(commitId: String, data: ByteArray, remote: Remote) {
+        addRemote(remote)
+        git.fetch().setRemote(remote.id).call()
         git.merge()
                 .setCommit(false)
                 .setFastForward(MergeCommand.FastForwardMode.NO_FF)
@@ -56,11 +58,6 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
             it.setName(remote.id)
             it
         }.call()
-    }
-
-    fun fetch(remote: Remote) {
-        addRemote(remote)
-        git.fetch().setRemote(remote.id).call()
     }
 
     fun Remote.branchRefName() = "refs/remotes/$id/$id"

@@ -19,21 +19,13 @@ class GitDDag_TestBase extends Specification {
         theirDag = new TestGitDDag(folder.root.toPath().resolve(theirId), theirId)
     }
 
-    def iFetch() {
-        myDag.ddag.fetch(theirDag.remote())
-    }
-
-    def theyFetch() {
-        theirDag.ddag.fetch(myDag.remote())
-    }
-
-    def iCommit(String eventId) {
-        myDag.ddag.createEvent(eventId, utf8(eventId), theirDag.remote())
+    def iSync(String eventId) {
+        myDag.ddag.sync(eventId, utf8(eventId), theirDag.remote())
         return myHead()
     }
 
-    def theyCommit(String eventId) {
-        theirDag.ddag.createEvent(eventId, utf8(eventId), myDag.remote())
+    def theySync(String eventId) {
+        theirDag.ddag.sync(eventId, utf8(eventId), myDag.remote())
         return theirHead()
     }
 
