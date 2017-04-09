@@ -28,7 +28,7 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
         push()
     }
 
-    fun sync(commitId: String, data: ByteArray, remote: Remote) {
+    fun sync(commitId: String, data: ByteArray, remote: Remote): SyncResult {
         addRemote(remote)
         git.fetch().setRemote(remote.id).call()
         git.merge()
@@ -41,6 +41,8 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
                 .setMessage(commitId)
                 .call()
         push()
+
+        return SyncResult(arrayListOf())
     }
 
     private fun push() {

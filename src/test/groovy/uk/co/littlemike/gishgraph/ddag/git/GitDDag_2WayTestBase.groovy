@@ -1,7 +1,5 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
-import kotlin.text.Charsets
-
 class GitDDag_2WayTestBase extends GitDDag_TestBase {
     static String myId = "me"
     static String theirId = "them"
@@ -30,9 +28,5 @@ class GitDDag_2WayTestBase extends GitDDag_TestBase {
 
     def theirHead() {
         return theirDag.localRepo.findCommit("HEAD")
-    }
-
-    static utf8(String string) {
-        return string.getBytes(Charsets.UTF_8)
     }
 }
