@@ -2,7 +2,7 @@ package uk.co.littlemike.gishgraph.ddag.git
 
 import org.eclipse.jgit.revwalk.RevCommit
 
-class GitDDag_CommitTests extends GitDDag_TestBase {
+class GitDDag_CommitTests extends GitDDag_2WayTestBase {
     static eventId = "me-2"
     static eventData = utf8(eventId)
 

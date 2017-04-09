@@ -2,7 +2,7 @@ package uk.co.littlemike.gishgraph.ddag.git
 
 import groovy.json.internal.Charsets
 
-class GitDDag_InitialisationTests extends GitDDag_TestBase {
+class GitDDag_InitialisationTests extends GitDDag_2WayTestBase {
     static String eventId = "an-event"
     static byte[] eventData = "Hello world!".getBytes(Charsets.UTF_8)
 

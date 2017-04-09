@@ -1,6 +1,6 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
-class GitDDag_FetchTests extends GitDDag_TestBase {
+class GitDDag_FetchTests extends GitDDag_2WayTestBase {
     static String theirEventId = "their-event"
     static byte[] theirEventData = utf8("Foo & Bar")
 
