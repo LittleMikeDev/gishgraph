@@ -12,14 +12,32 @@ class GitDDag_2WayTestBase extends GitDDag_TestBase {
         theirDag = testGitDDag(theirId)
     }
 
-    def iSync(String eventId) {
-        myDag.ddag.sync(eventId, utf8(eventId), theirDag.remote())
+    def iFetch() {
+        myDag.ddag.fetch(theirDag.remote())
+    }
+
+    def theyFetch() {
+        theirDag.ddag.fetch(myDag.remote())
+    }
+
+    def iCreateEvent(String eventId) {
+        myDag.ddag.createEvent(eventId, utf8(eventId), theirDag.remote())
         return myHead()
     }
 
-    def theySync(String eventId) {
-        theirDag.ddag.sync(eventId, utf8(eventId), myDag.remote())
+    def theyCreateEvent(String eventId) {
+        theirDag.ddag.createEvent(eventId, utf8(eventId), myDag.remote())
         return theirHead()
+    }
+
+    def iSync(String eventId) {
+        iFetch()
+        return iCreateEvent(eventId)
+    }
+
+    def theySync(String eventId) {
+        theyFetch()
+        return theyCreateEvent(eventId)
     }
 
     def myHead() {

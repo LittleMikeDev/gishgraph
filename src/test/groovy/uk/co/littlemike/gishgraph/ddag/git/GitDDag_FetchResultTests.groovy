@@ -1,10 +1,10 @@
 package uk.co.littlemike.gishgraph.ddag.git
 
-class GitDDag_SyncEventTests extends GitDDag_TestBase {
+class GitDDag_FetchResultTests extends GitDDag_TestBase {
 
-    def alice
-    def bob
-    def charles
+    TestGitDDag alice
+    TestGitDDag bob
+    TestGitDDag charles
 
     def setup() {
         alice = testGitDDag("alice")
@@ -16,11 +16,11 @@ class GitDDag_SyncEventTests extends GitDDag_TestBase {
         charles.createInitialEvent("c-1")
     }
 
-    def "returns sync result"() {
+    def "returns fetch result"() {
         when:
-        SyncResult syncResult = alice.sync("a-2", bob)
+        FetchResult result = alice.fetch(bob)
 
         then:
-        syncResult
+        result
     }
 }

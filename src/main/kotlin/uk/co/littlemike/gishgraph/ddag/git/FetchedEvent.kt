@@ -2,10 +2,10 @@ package uk.co.littlemike.gishgraph.ddag.git
 
 import java.util.*
 
-data class SyncEvent(val id: String, val data: ByteArray) {
+data class FetchedEvent(val id: String, val data: ByteArray) {
 
     override fun equals(other: Any?): Boolean {
-        return other is SyncEvent
+        return other is FetchedEvent
                 && other.id == id
                 && Arrays.equals(other.data, data)
     }
