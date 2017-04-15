@@ -4,16 +4,14 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.MergeCommand
 import org.eclipse.jgit.transport.RefSpec
 import org.eclipse.jgit.transport.URIish
-import java.nio.file.Files
 import java.nio.file.Path
 
 class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
     private val git = Git.init().setDirectory(workingDirectory.toFile()).call()
-    private val myCommits = workingDirectory.resolve(myRemote.id)
+    private val commitFormat = CommitFormat(git, myRemote)
 
     init {
-        Files.createDirectories(myCommits)
-        git.commit().setMessage("Created repo for ${myRemote.id}").call()
+        commitFormat.createInitialCommit()
         git.checkout()
                 .setCreateBranch(true)
                 .setName(myRemote.id)
@@ -23,8 +21,7 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
     }
 
     fun createInitialEvent(commitId: String, data: ByteArray) {
-        writeCommit(commitId, data)
-        git.commit().setMessage(commitId).call()
+        commitFormat.write(commitId, data)
         push()
     }
 
@@ -34,10 +31,7 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
                 .setFastForward(MergeCommand.FastForwardMode.NO_FF)
                 .include(git.repository.exactRef(remote.branchRefName()))
                 .call()
-        writeCommit(commitId, data)
-        git.commit()
-                .setMessage(commitId)
-                .call()
+        commitFormat.write(commitId, data)
         push()
     }
 
@@ -45,16 +39,10 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
         git.push().setRemote(myRemote.id).setRefSpecs(myRemote.pushRefSpec()).call()
     }
 
-    private fun writeCommit(commitId: String, data: ByteArray) {
-        myCommits.resolve(commitId).toFile().writeBytes(data)
-        git.add().addFilepattern(".").call()
-    }
-
     private fun addRemote(remote: Remote) {
-        git.remoteAdd().let {
-            it.setUri(URIish(remote.url))
-            it.setName(remote.id)
-            it
+        git.remoteAdd().apply {
+            setUri(URIish(remote.url))
+            setName(remote.id)
         }.call()
     }
 
