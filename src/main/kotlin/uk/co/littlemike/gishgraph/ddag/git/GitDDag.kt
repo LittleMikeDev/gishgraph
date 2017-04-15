@@ -9,6 +9,7 @@ import java.nio.file.Path
 class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
     private val git = Git.init().setDirectory(workingDirectory.toFile()).call()
     private val commitFormat = CommitFormat(git, myRemote)
+    private val branchDiffer = BranchDiffer(git.repository)
 
     init {
         commitFormat.createInitialCommit()
@@ -49,7 +50,8 @@ class GitDDag(workingDirectory: Path, private val myRemote: Remote) {
     fun fetch(remote: Remote): FetchResult {
         addRemote(remote)
         git.fetch().setRemote(remote.id).call()
-        return FetchResult(arrayListOf())
+        val fetchedCommits = branchDiffer.diff(myRemote.branchRefName(), remote.branchRefName())
+        return FetchResult(commitFormat.parseAll(fetchedCommits, ::FetchedEvent))
     }
 
     fun Remote.branchRefName() = "refs/remotes/$id/$id"

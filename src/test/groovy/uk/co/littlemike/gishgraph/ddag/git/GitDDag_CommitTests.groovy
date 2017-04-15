@@ -34,7 +34,7 @@ class GitDDag_CommitTests extends GitDDag_2WayTestBase {
         then:
         myDag.localRepo.isClean()
         myCommit != null
-        myCommit.fullMessage == eventId
+        myCommit.fullMessage == "$myId/$eventId"
     }
 
     def "Commit is a merge commit from my and their initial events"() {

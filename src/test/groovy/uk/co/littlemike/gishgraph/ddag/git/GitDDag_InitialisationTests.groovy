@@ -41,7 +41,7 @@ class GitDDag_InitialisationTests extends GitDDag_2WayTestBase {
         myDag.localRepo.isClean()
         def commit = myHead()
         commit != null
-        commit.fullMessage == eventId
+        commit.fullMessage == "$myId/$eventId"
     }
 
     def "commits to own branch"() {

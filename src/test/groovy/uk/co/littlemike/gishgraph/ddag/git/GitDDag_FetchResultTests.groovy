@@ -21,6 +21,8 @@ class GitDDag_FetchResultTests extends GitDDag_TestBase {
         FetchResult result = alice.fetch(bob)
 
         then:
-        result
+        result == new FetchResult([
+                new FetchedEvent("b-1", utf8("b-1"))
+        ])
     }
 }

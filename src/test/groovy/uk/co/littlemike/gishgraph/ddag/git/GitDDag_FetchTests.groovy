@@ -4,6 +4,10 @@ class GitDDag_FetchTests extends GitDDag_2WayTestBase {
     static String theirEventId = "their-event"
     static byte[] theirEventData = utf8("Foo & Bar")
 
+    def setup() {
+        myDag.ddag.createInitialEvent("me-1", utf8("me-1"))
+    }
+
     def "Fetches commits from other repository"() {
         given:
         theirDag.ddag.createInitialEvent(theirEventId, theirEventData)
