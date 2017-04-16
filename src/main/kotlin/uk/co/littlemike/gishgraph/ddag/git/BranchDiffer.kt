@@ -10,7 +10,7 @@ class BranchDiffer(private val repository: Repository) {
         return RevWalk(repository).use { walk ->
             walk.markStart(walk.lookupCommit(repository.resolve(remoteBranch)))
             walk.markUninteresting(walk.lookupCommit(repository.resolve(myBranch)))
-            walk.toList()
+            walk.reversed()
         }
     }
 

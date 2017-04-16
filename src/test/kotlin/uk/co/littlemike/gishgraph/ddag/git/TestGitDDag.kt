@@ -12,6 +12,11 @@ class TestGitDDag(rootDirectory: Path, val id: String) {
 
     fun createInitialEvent(eventId: String) = ddag.createInitialEvent(eventId, utf8(eventId))
 
+    fun sync(eventId: String, other: TestGitDDag) {
+        fetch(other)
+        return ddag.createEvent(eventId, utf8(eventId), other.remote())
+    }
+
     fun fetch(other: TestGitDDag) = ddag.fetch(other.remote())
 
     private fun utf8(string: String) = string.toByteArray(Charsets.UTF_8)
